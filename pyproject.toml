@@ -1,0 +1,25 @@
+[project]
+name = "autonomous-ai-coworker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "striker-14", email = "pranaypartapsingh14@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "google-search-results>=2.4.2",
+    "langchain-community>=0.4.2",
+    "langchain-mcp-adapters>=0.3.2",
+    "langchain[google-genai]>=1.4.0",
+    "langgraph>=1.2.11",
+    "python-dotenv>=1.2.3",
+    "wikipedia>=1.4.0",
+]
+
+[project.scripts]
+autonomous-ai-coworker = "autonomous_ai_coworker:main"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
