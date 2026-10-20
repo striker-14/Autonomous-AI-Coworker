@@ -207,9 +207,9 @@ When using the browser, navigate to pages and read their content efficiently.
 Work on the user's task until you have completed it.
 
 When you are finished, give the user a clear final answer explaining:
-- what you did
-- what you found
-- what you produced, if anything.
+- only the result needed to answer the user's request.
+- mention a created or changed file when relevant.
+- keep the answer concise; do not add tool logs, process notes, or extra metadata.
 """
 
 
@@ -272,7 +272,23 @@ class Sidekick:
             config=config,
         )
 
-        return result["messages"][-1].content
+        content = result["messages"][-1].content
+
+        # Gemini can return text as structured content blocks with provider
+        # metadata (for example, a signature in ``extras``). Only display text.
+        if isinstance(content, str):
+            return content
+
+        if isinstance(content, list):
+            return "\n".join(
+                block["text"]
+                for block in content
+                if isinstance(block, dict)
+                and block.get("type") == "text"
+                and isinstance(block.get("text"), str)
+            )
+
+        return str(content)
 
     def cleanup(self):
         if self.sessions:
